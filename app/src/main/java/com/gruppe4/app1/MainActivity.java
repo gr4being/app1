@@ -16,6 +16,7 @@ import com.aldebaran.qi.sdk.QiSDK;
 import com.aldebaran.qi.sdk.RobotLifecycleCallbacks;
 import com.aldebaran.qi.sdk.builder.AnimateBuilder;
 import com.aldebaran.qi.sdk.builder.AnimationBuilder;
+import com.aldebaran.qi.sdk.builder.ChatBuilder;
 import com.aldebaran.qi.sdk.builder.EnforceTabletReachabilityBuilder;
 import com.aldebaran.qi.sdk.builder.QiChatbotBuilder;
 import com.aldebaran.qi.sdk.builder.SayBuilder;
@@ -24,6 +25,7 @@ import com.aldebaran.qi.sdk.design.activity.RobotActivity;
 import com.aldebaran.qi.sdk.object.actuation.Animate;
 import com.aldebaran.qi.sdk.object.actuation.Animation;
 import com.aldebaran.qi.sdk.object.actuation.EnforceTabletReachability;
+import com.aldebaran.qi.sdk.object.conversation.Chat;
 import com.aldebaran.qi.sdk.object.conversation.QiChatbot;
 import com.aldebaran.qi.sdk.object.conversation.Say;
 import com.aldebaran.qi.sdk.object.conversation.Topic;
@@ -40,6 +42,7 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
     private Activity mainActivity;
     private QiContext qiContext;
     private Animate animate;
+    private Chat chat;
 
 
     private Hashtable<Integer, String> createHasmap(String question1, String question2,
@@ -123,16 +126,37 @@ public class MainActivity extends RobotActivity implements RobotLifecycleCallbac
                 Future<Void> animateFuture = animate.async().run();
             }
         });
+
+        // ---------------
+        // chat code
+        // ---------------
+
         Topic topic = TopicBuilder.with(qiContext)
                 .withResource(R.raw.test).build();
         QiChatbot qiChatbot = QiChatbotBuilder.with(qiContext)
                 .withTopic(topic)
                 .build();
 
+        chat = ChatBuilder.with(qiContext)
+                .withChatbot(qiChatbot)
+                .build();
+        chat.addOnStartedListener(() -> Log.i("aa", "Discussion started."));
+        Future<Void> chatFuture = chat.async().run();
+
+        chatFuture.thenConsume(future -> {
+            if (future.hasError()) {
+                Log.e("chat error hype",
+                        "Discussion finished with error.",
+                        future.getError());
+            }
+        });
     }
 
     public void onRobotFocusLost() {
         // The robot focus is lost.
+        if (chat != null) {
+            chat.removeAllOnStartedListeners();
+        }
     }
 
     public void onRobotFocusRefused(String reason) {
