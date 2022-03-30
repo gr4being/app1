@@ -129,11 +129,15 @@
         </Key>
     </ActuatorCurve>
     <ActuatorCurve fps="25" actuator="RWristYaw" mute="false" unit="degree">
-        <Key value="11.8354731" frame="0">
-            <Tangent side="right" abscissaParam="69.6666667" ordinateParam="0" editor:interpType="bezier_auto"/>
+        <Key value="8.97452736" frame="0">
+            <Tangent side="right" abscissaParam="33" ordinateParam="0" editor:interpType="bezier_auto"/>
         </Key>
-        <Key value="44.7907677" frame="209">
-            <Tangent side="left" abscissaParam="-69.6666667" ordinateParam="0" editor:interpType="bezier_auto"/>
+        <Key value="16.4985867" frame="99">
+            <Tangent side="left" abscissaParam="-33" ordinateParam="0" editor:interpType="bezier_auto"/>
+            <Tangent side="right" abscissaParam="36.6666667" ordinateParam="0" editor:interpType="bezier_auto"/>
+        </Key>
+        <Key value="8.97452736" frame="209">
+            <Tangent side="left" abscissaParam="-36.6666667" ordinateParam="0" editor:interpType="bezier_auto"/>
         </Key>
     </ActuatorCurve>
     <ActuatorCurve fps="25" actuator="RHand" mute="false" unit="dimensionless">
